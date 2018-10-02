@@ -7,11 +7,13 @@
 <body>
 
     <h1>Online Selling Form - eBuy</h1>
+
+    <a href="display-form.php">View all Posted Ads</a>
     <br />
     <h3>Account Information</h3>
     <hr>
 
-    <form method="POST" action="save-product.php">
+    <form method="POST" action="save-form.php">
         <fieldset>
             <label for="name">Name: </label>
             <input type="text" id="name" name="name">
