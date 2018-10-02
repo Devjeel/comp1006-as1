@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title> eBuy Posts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -23,11 +24,13 @@
     $accInfo = $cmd->fetchAll();
 
     //start the table
-    echo '<table><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th></thead><tbody>';
+    echo '<table class="table table-bordered table-striped text-center"><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th>
+<th>Product Name</th><th>Product Price</th></thead><tbody>';
 
     //loop the data & show each restaurants
     foreach($accInfo as $ac){
-        echo'<tr><td>'. $ac['name'] .'</td><td>' . $ac['address']. '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td></tr>';
+        echo'<tr><td>'. $ac['name'] .'</td><td>' . $ac['address']. '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td><td>' .
+            $ac['productName'] . '</td><td>' . $ac['productPrice'] . '</td></tr>';
     }
 
     //close the table
