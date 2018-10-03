@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title> eBuy Posts</title>
+<!--  Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
@@ -12,8 +13,8 @@
     <h1> All Ads for our customers </h1>
 
     <?php
-    //connect
-    $db = new PDO('mysql:host=localhost;dbname=as1', 'root','jeelhp2015.');
+    //connect to DB
+    $db = new PDO('mysql:host=aws.computerstudi.es;dbname=gc200395854', 'gc200395854','LEIknIIHYI');
 
     //set up query
     $sql = "SELECT * FROM accounts";
@@ -27,7 +28,7 @@
     echo '<table class="table table-bordered table-striped text-center"><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th>
 <th>Product Name</th><th>Product Price</th></thead><tbody>';
 
-    //loop the data & show each restaurants
+    //loop and print the data
     foreach($accInfo as $ac){
         echo'<tr><td>'. $ac['name'] .'</td><td>' . $ac['address']. '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td><td>' .
             $ac['productName'] . '</td><td>' . $ac['productPrice'] . '</td></tr>';

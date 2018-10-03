@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title> Form saved </title>
+    <!--  Bootstrap4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
@@ -19,6 +20,7 @@ $productPrice = $_POST['product-price'];
 //Validate each input (using boolean)
 $OK = true;
 
+//validation from server side
 if(empty($name)) {
     echo "Name is required. <br />";
     $OK = false;
@@ -41,8 +43,8 @@ if(empty($productPrice)) {
 }
 
 if(OK == true){
-    //connect
-    $db = new PDO('mysql:host=localhost;dbname=as1', 'root','jeelhp2015.');
+    //connect to DB
+    $db = new PDO('mysql:host=aws.computerstudi.es;dbname=gc200395854', 'gc200395854','LEIknIIHYI');
 
     // setup and execute INSERT command
     $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice) VALUES(:name, :address, :gender, :phone, :productName, :productPrice)";
