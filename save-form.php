@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title> Form saved </title>
-    <!--  Bootstrap4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-</head>
-<body>
-
 <?php
+$title = "Form saved";
+require('header.php');
+
 //introduce variable and store data from form
 $name = $_POST['name'];
 $address = $_POST['address'];
@@ -44,7 +37,7 @@ if(empty($productPrice)) {
 
 if(OK == true){
     //connect to DB
-    $db = new PDO('mysql:host=aws.computerstudi.es;dbname=gc200395854', 'gc200395854','LEIknIIHYI');
+    require('db.php');
 
     // setup and execute INSERT command
     $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice) VALUES(:name, :address, :gender, :phone, :productName, :productPrice)";

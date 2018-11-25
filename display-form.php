@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title> eBuy Posts</title>
-<!--  Bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-</head>
-<body>
-
-    <a href="eBuyForm.php">Sell New product</a>
-
+<?php
+$title = "eBuy Posts";
+require('header.php');
+?>
+    <br />
     <h1> All Ads for our customers </h1>
+    <br />
+
+    <form class="form-inline">
+        <label>Search Here : </label>
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    <br />
 
     <?php
     //connect to DB
-    $db = new PDO('mysql:host=aws.computerstudi.es;dbname=gc200395854', 'gc200395854','LEIknIIHYI');
+    require('db.php');
 
     //set up query
     $sql = "SELECT * FROM accounts";

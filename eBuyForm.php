@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>eBuy Selling Form</title>
-<!--    Bootstrap4 and font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
-</head>
-<body>
-
+<?php
+$title = "eBuy Selling Form";
+require('header.php');
+?>
+    <br />
     <h1>Online Product Selling Form - eBuy</h1>
-
-    <a href="display-form.php">View all Posted Ads</a>
-    <br /><br />
+    <br />
     <h3><i class="far fa-user"></i>Account Information</h3>
     <!-- Horizontal ruler -->
     <hr>
@@ -28,12 +20,12 @@
             <textarea id="address" name="address"></textarea>
         </fieldset>
 
-        <fieldset >
+        <fieldset class="dropdown">
             <label for="gender" class="col-md-1">Gender: </label>
             <select name="gender" id="gender">
             <?php
             //connect to DB
-            $db = new PDO('mysql:host=aws.computerstudi.es;dbname=gc200395854', 'gc200395854','LEIknIIHYI');
+            require('db.php');
 
             //set up query
             $sql = "SELECT * FROM gender_list";
@@ -58,7 +50,6 @@
             <input type="tel" id="phone" name="phone" required
                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890">
         </fieldset>
-
 
 
         <!--Product Info-->
