@@ -28,12 +28,17 @@ require('header.php');
 
     //start the table
     echo '<table class="table table-bordered table-striped text-center"><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th>
-<th>Product Name</th><th>Product Price</th></thead><tbody>';
+<th>Product Name</th><th>Product Price</th><th>Actions</th></thead><tbody>';
 
     //loop and print the data
     foreach($accInfo as $ac){
         echo'<tr><td>'. $ac['name'] .'</td><td>' . $ac['address']. '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td><td>' .
-            $ac['productName'] . '</td><td>' . $ac['productPrice'] . '</td></tr>';
+            $ac['productName'] . '</td><td>' . $ac['productPrice'] . '</td>' ;
+
+    echo "<td><a class=\"btn btn-sm btn-info\" href=\"eBuyForm.php?accountId={$ac['accountId']}\">Edit</a>
+                <a href=\"delete.php?accountId={$ac['accountId']}\"
+                class=\"btn btn-sm btn-danger confirmation\">Delete</a></td>";
+    echo '</tr>';
     }
 
     //close the table
@@ -43,6 +48,8 @@ require('header.php');
     $db = null;
     ?>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="js/scripts.js"></script>
 
 </body>
 </html>

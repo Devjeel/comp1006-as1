@@ -1,23 +1,58 @@
 <?php
 $title = "eBuy Selling Form";
 require('header.php');
+
+//Initialized variables
+$name = null;
+$address = null;
+$gender = null;
+$phone = null;
+$productName = null;
+$productPrice = null;
+$accountId = null;
+
+if (!empty($_GET['accountId'])) {
+    $accountId = $_GET['accountId'];
+
+    // connect
+    require('db.php');
+
+    // set up and execute query
+    $sql = "SELECT * FROM accounts WHERE accountId = :accountId";
+    $cmd = $db->prepare($sql);
+    $cmd->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    $cmd->execute();
+    $ac = $cmd->fetch();
+
+    // store each column value in a variable
+    $name = $ac['name'];
+    $address = $ac['address'];
+    $genderG = $ac['gender'];
+    $phone = $ac['phone'];
+    $productName = $ac['productName'];
+    $productPrice = $ac['productPrice'];
+
+    // disconnect
+    $db = null;
+}
 ?>
     <br />
     <h1>Online Product Selling Form - eBuy</h1>
     <br />
     <h3><i class="far fa-user"></i>Account Information</h3>
+    <small>We never share your private info to 3rd party !!</small>
     <!-- Horizontal ruler -->
     <hr>
 
-
+    <small> * required fields </small>
     <form method="POST" action="save-form.php" >
         <fieldset>
-            <label for="name" class="col-md-1">Name: </label>
-            <input type="text" id="name" name="name">
+            <label for="name" class="col-md-1">Name*: </label>
+            <input type="text" id="name" name="name" required value="<?php echo $name; ?>">
         </fieldset>
         <fieldset>
             <label for="address" class="col-md-1">Address: </label>
-            <textarea id="address" name="address"></textarea>
+            <textarea id="address" name="address"><?php echo $address; ?></textarea>
         </fieldset>
 
         <fieldset class="dropdown">
@@ -37,7 +72,11 @@ require('header.php');
 
             //loop and print data
             foreach($gender as $g){
-                echo'<option>'. $g['gender'] .'</option>';
+                if($g['gender'] == $genderG){
+                    echo'<option selected>'. $g['gender'] .'</option>';
+                }else{
+                    echo'<option>'. $g['gender'] .'</option>';
+                }
             }
 
             ?>
@@ -45,10 +84,11 @@ require('header.php');
         </fieldset>
 
         <fieldset>
-            <label for="phone" class="col-md-1">Phone: </label>
+            <label for="phone" class="col-md-1">Phone*: </label>
             <!-- phone no. must be in 123-123-1234 pattern-->
             <input type="tel" id="phone" name="phone" required
-                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890">
+                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890"
+                    value="<?php echo $phone; ?>">
         </fieldset>
 
 
@@ -57,18 +97,23 @@ require('header.php');
         <h3><i class="fas fa-shopping-cart"></i>Product Info</h3>
         <hr>
         <fieldset>
-            <label for="product-name" class="col-md-1">Product Name: </label>
-            <input type="text" id="product-name" name="product-name" placeholder="Product Name" required>
+            <label for="product-name" class="col-md-1">Product Name*: </label>
+            <input type="text" id="product-name" name="product-name" placeholder="Product Name" required value="<?php echo $productName; ?>">
         </fieldset>
         <fieldset>
-            <label for="product-price" class="col-md-1">Product Price: </label>
+            <label for="product-price" class="col-md-1">Product Price*: </label>
             <!-- price increment by 0.5 -->
-            <input type="number" id="product-price" name="product-price" placeholder="Selling price" step="0.5">
+            <input type="number" id="product-price" name="product-price" placeholder="Selling price" step="0.5" required value="<?php echo $productPrice; ?>">
         </fieldset>
 
         <br />
 
         <input type="submit" value="Post as a Ad" class="btn btn-outline-success btn-md">
+        <input type="hidden" name="accountId" id="accountId" value="<?php echo $accountId; ?>" />
     </form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 </html>
