@@ -1,5 +1,9 @@
 <?php
+$title = "Delete Page";
 require('header.php');
+
+//Authentication Check
+require('auth.php');
 
 // GET selected accountId
 $accountId = $_GET['accountId'];

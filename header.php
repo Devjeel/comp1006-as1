@@ -21,21 +21,26 @@
             <li class="nav-item active">
                 <a class="nav-link" href="display-form.php">View All Ads</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="eBuyForm.php">Post Ad</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
             <?php
             // access the current session
             session_start();
+            if (isset($_SESSION['userId'])){
+                echo "<li class='nav-item active'>
+                        <a class='nav-link' href='eBuyForm.php'>Post Ad</a>
+                     </li>";
+            }
+            ?>
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <?php
             if (empty($_SESSION['userId'])) {
-                echo '<li class="nav-item active"><a class="nav-link" href="#"><i class="fas fa-user-plus"></i> Register  </a></li>
-                        <li><a class="nav-link active" href="#"><i class="fas fa-sign-in-alt"></i> Login</a></li>';
+                echo '<li class="nav-item active"><a class="nav-link" href="register.php"><i class="fas fa-user-plus"></i> Register  </a></li>
+                        <li><a class="nav-link active" href="login.php"><i class="fas fa-sign-in-alt"></i> Login</a></li>';
             }
             else {
                 echo '<li class="nav-item active"><a class="nav-link" href="#"><i class="fas fa-user"></i> ' . $_SESSION['username'] . '  </a></li>
-                        <li><a class="nav-link active" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>';
+                        <li><a class="nav-link active" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>';
             }
             ?>
         </ul>

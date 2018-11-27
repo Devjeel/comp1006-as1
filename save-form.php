@@ -2,6 +2,9 @@
 $title = "Form saved";
 require('header.php');
 
+//Authentication Check
+require('auth.php');
+
 //introduce variable and store data from form
 $name = $_POST['name'];
 $address = $_POST['address'];
@@ -9,7 +12,7 @@ $gender = $_POST['gender'];
 $phone = $_POST['phone'];
 $productName = $_POST['product-name'];
 $productPrice = $_POST['product-price'];
-$accountId = $_GET['accountId'];
+$accountId = $_POST['accountId'];
 
 //Validate each input (using boolean)
 $OK = true;
@@ -36,7 +39,7 @@ if(empty($productPrice)) {
     $OK = false;
 }
 
-if(OK == true){
+if($OK == true){
     //connect to DB
     require('db.php');
 
@@ -51,10 +54,13 @@ if(OK == true){
     $cmd = $db->prepare($sql);
     $cmd->bindParam(':name', $name, PDO::PARAM_STR, 60);
     $cmd->bindParam(':address', $address, PDO::PARAM_STR, 120);
-    $cmd->bindParam(':phone',$phone, PDO::PARAM_STR, 15);
+    $cmd->bindParam(':phone',$phone, PDO::PARAM_STR, 13);
     $cmd->bindParam(':gender',$gender, PDO::PARAM_STR,20);
     $cmd->bindParam(':productName',$productName, PDO::PARAM_STR,30);
     $cmd->bindParam(':productPrice',$productPrice, PDO::PARAM_STR,10);
+    if (!empty($accountId)) {
+        $cmd->bindParam(':accountId', $accountId, PDO::PARAM_INT);
+    }
     $cmd->execute();
 
     //disconnect
