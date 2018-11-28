@@ -8,7 +8,7 @@ require('header.php');
 
     <form class="form-inline">
         <label>Search Here : </label>
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" type="search" name="searchName" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 
@@ -22,14 +22,24 @@ require('header.php');
         //set up query
         $sql = "SELECT * FROM accounts";
 
+        if (isset($_GET['searchName'])) {
+            $searchName = $_GET['searchName'];
+            $sql .= " WHERE productName LIKE " . $searchName;
+        }
+
         //execute and store the table
         $cmd = $db->prepare($sql);
-        $cmd->execute();
+
+//        if(isset($searchName))
+//            echo "<h3>You searched: $searchName";
+//        else
+            $cmd->execute();
+
         $accInfo = $cmd->fetchAll();
 
         //start the table
-        echo '<table class="table table-bordered table-striped text-center"><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th>
-        <th>Product Name</th><th>Product Price</th>';
+        echo '<table class="table table-bordered table-striped text-center sortable"><thead><th>Name</th><th>Address</th><th>Phone</th><th>Gender</th>
+        <th>product image</th><th>Product Name</th><th>Product Price</th>';
 
         // Check Auth
         if (isset($_SESSION['userId'])) {
@@ -39,7 +49,10 @@ require('header.php');
 
         //loop and print the data
         foreach ($accInfo as $ac) {
-            echo '<tr><td>' . $ac['name'] . '</td><td>' . $ac['address'] . '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td><td>' .
+            echo '<tr><td>' . $ac['name'] . '</td><td>' . $ac['address'] . '</td><td>' . $ac['phone'] . '</td><td>' . $ac['gender'] . '</td><td>';
+                if(isset($imageName)){
+                    echo "<img src=\"img/{$ac['imageName']}\"";
+                } else { echo "No Image";} echo'</td><td>' .
                 $ac['productName'] . '</td><td>' . $ac['productPrice'] . '</td>';
 
             if (isset($_SESSION['userId'])) {
@@ -68,7 +81,7 @@ require('header.php');
     ?>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="js/scripts.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 </html>

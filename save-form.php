@@ -14,7 +14,7 @@ try {
     $productName = $_POST['product-name'];
     $productPrice = $_POST['product-price'];
     $accountId = $_POST['accountId'];
-    $imageFile = null;
+    $imageName = null;
 
     //Validate each input (using boolean)
     $OK = true;
@@ -45,24 +45,27 @@ try {
     if(isset($_FILES['imageFile'])){
         $imageFile = $_FILES['imageFile'];
 
-        //Generate Unique name
-        $imageName = session_id() . "_" . $imageFile['name'];
+        if($imageFile['size'] > 0){
+            //Generate Unique name
+            $imageName = session_id() . "_" . $imageFile['name'];
 
-        //check image file
-        $imageType = null;
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            //check image file
+            $imageType = null;
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
-        $imageType = finfo_file($finfo, $imageFile['tmp_name']);
+            $imageType = finfo_file($finfo, $imageFile['tmp_name']);
 
-        // allow only jpeg & png
-        if (($imageType != "image/jpeg") && ($imageType != "image/jpg") && ($imageType != "image/png")) {
-            echo 'Please upload a valid JPG or PNG image file<br />';
-            $ok = false;
+            // allow only jpeg & png
+            if (($imageType != "image/jpeg") && ($imageType != "image/jpg") && ($imageType != "image/png")) {
+                echo 'Please upload a valid JPG or PNG image file<br />';
+                $ok = false;
+            }
+            else {
+                // save the file
+                move_uploaded_file($imageFile['tmp_name'], "img/{$imageName}");
+            }
         }
-        else {
-            // save the file
-            move_uploaded_file($imageFile['tmp_name'], "img/{$imageName}");
-        }
+
     }
 
     if ($OK == true) {
@@ -71,9 +74,9 @@ try {
 
         // set up and execute an INSERT or UPDATE command
         if (empty($accountId)) {
-            $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice, imageFile) VALUES(:name, :address, :gender, :phone, :productName, :productPrice, :imageFile)";
+            $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice, imageName) VALUES(:name, :address, :gender, :phone, :productName, :productPrice, :imageName)";
         } else {
-            $sql = "UPDATE accounts SET name = :name, address = :address, gender = :gender, phone = :phone, productName = :productName, productPrice = :productPrice, imageFile = :imageFile WHERE accountId = :accountId";
+            $sql = "UPDATE accounts SET name = :name, address = :address, gender = :gender, phone = :phone, productName = :productName, productPrice = :productPrice, imageName = :imageName WHERE accountId = :accountId";
         }
 
         $cmd = $db->prepare($sql);
@@ -83,7 +86,7 @@ try {
         $cmd->bindParam(':gender', $gender, PDO::PARAM_STR, 20);
         $cmd->bindParam(':productName', $productName, PDO::PARAM_STR, 30);
         $cmd->bindParam(':productPrice', $productPrice, PDO::PARAM_STR, 10);
-        $cmd->bindParam(':imageFile',$imageFile,PDO::PARAM_STR,100);
+        $cmd->bindParam(':imageName',$imageName,PDO::PARAM_STR,100);
         if (!empty($accountId)) {
             $cmd->bindParam(':accountId', $accountId, PDO::PARAM_INT);
         }

@@ -14,6 +14,7 @@ $phone = null;
 $productName = null;
 $productPrice = null;
 $accountId = null;
+$imageName = null;
 
 if (!empty($_GET['accountId'])) {
     $accountId = $_GET['accountId'];
@@ -35,6 +36,7 @@ if (!empty($_GET['accountId'])) {
     $phone = $ac['phone'];
     $productName = $ac['productName'];
     $productPrice = $ac['productPrice'];
+    $imageName = $ac['imageFile'];
 
     // disconnect
     $db = null;
@@ -113,6 +115,13 @@ if (!empty($_GET['accountId'])) {
                 <label for="ImageFile" class="col-md-1">Image:</label>
                 <input type="file" name="imageFile" id="imageFile">
             </fieldset>
+            <div class="container">
+                <?php
+                    if (isset($imageName)){
+                        echo "<img src=\"img/$imageName\" alt=\"Image file\">";
+                    }
+                ?>
+            </div>
             <br />
 
             <input type="submit" value="Post as a Ad" class="btn btn-outline-success btn-md">
