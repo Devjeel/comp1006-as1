@@ -14,6 +14,7 @@ try {
     $productName = $_POST['product-name'];
     $productPrice = $_POST['product-price'];
     $accountId = $_POST['accountId'];
+    $imageFile = null;
 
     //Validate each input (using boolean)
     $OK = true;
@@ -40,15 +41,39 @@ try {
         $OK = false;
     }
 
+    //Check image file type
+    if(isset($_FILES['imageFile'])){
+        $imageFile = $_FILES['imageFile'];
+
+        //Generate Unique name
+        $imageName = session_id() . "_" . $imageFile['name'];
+
+        //check image file
+        $imageType = null;
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+        $imageType = finfo_file($finfo, $imageFile['tmp_name']);
+
+        // allow only jpeg & png
+        if (($imageType != "image/jpeg") && ($imageType != "image/jpg") && ($imageType != "image/png")) {
+            echo 'Please upload a valid JPG or PNG image file<br />';
+            $ok = false;
+        }
+        else {
+            // save the file
+            move_uploaded_file($imageFile['tmp_name'], "img/{$imageName}");
+        }
+    }
+
     if ($OK == true) {
         //connect to DB
         require('db.php');
 
         // set up and execute an INSERT or UPDATE command
         if (empty($accountId)) {
-            $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice) VALUES(:name, :address, :gender, :phone, :productName, :productPrice)";
+            $sql = "INSERT INTO accounts (name, address, gender, phone, productName, productPrice, imageFile) VALUES(:name, :address, :gender, :phone, :productName, :productPrice, :imageFile)";
         } else {
-            $sql = "UPDATE accounts SET name = :name, address = :address, gender = :gender, phone = :phone, productName = :productName, productPrice = :productPrice WHERE accountId = :accountId";
+            $sql = "UPDATE accounts SET name = :name, address = :address, gender = :gender, phone = :phone, productName = :productName, productPrice = :productPrice, imageFile = :imageFile WHERE accountId = :accountId";
         }
 
         $cmd = $db->prepare($sql);
@@ -58,6 +83,7 @@ try {
         $cmd->bindParam(':gender', $gender, PDO::PARAM_STR, 20);
         $cmd->bindParam(':productName', $productName, PDO::PARAM_STR, 30);
         $cmd->bindParam(':productPrice', $productPrice, PDO::PARAM_STR, 10);
+        $cmd->bindParam(':imageFile',$imageFile,PDO::PARAM_STR,100);
         if (!empty($accountId)) {
             $cmd->bindParam(':accountId', $accountId, PDO::PARAM_INT);
         }

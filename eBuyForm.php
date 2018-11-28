@@ -49,7 +49,7 @@ if (!empty($_GET['accountId'])) {
         <hr>
 
         <small> * required fields </small>
-        <form method="POST" action="save-form.php" >
+        <form method="POST" action="save-form.php" enctype="multipart/form-data">
             <fieldset>
                 <label for="name" class="col-md-1">Name*: </label>
                 <input type="text" id="name" name="name" required value="<?php echo $name; ?>">
@@ -109,7 +109,10 @@ if (!empty($_GET['accountId'])) {
                 <!-- price increment by 0.5 -->
                 <input type="number" id="product-price" name="product-price" placeholder="Selling price" step="0.5" required value="<?php echo $productPrice; ?>">
             </fieldset>
-
+            <fieldset>
+                <label for="ImageFile" class="col-md-1">Image:</label>
+                <input type="file" name="imageFile" id="imageFile">
+            </fieldset>
             <br />
 
             <input type="submit" value="Post as a Ad" class="btn btn-outline-success btn-md">
